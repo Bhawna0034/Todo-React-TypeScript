@@ -34,7 +34,7 @@ function App(){
   return (
     <div>
       <h1>Tasks</h1>
-      <label htmlFor="input-task"></label>
+      <label htmlFor="input-task">Add Task:</label>
       <input id="input-task" value={taskName} onChange={(event) => setTaskName(event.target.value) } />
       <button onClick={addTask}>Add</button>
       <ul>
