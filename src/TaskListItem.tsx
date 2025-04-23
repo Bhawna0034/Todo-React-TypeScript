@@ -1,8 +1,23 @@
-// type TaskListItemProps = {
-//     title: string;
-// };
+import { Task } from "./types";
 
-export default function TaskListItem({children}:React.PropsWithChildren){
-    // console.info("TaskListItem Rendered");
-    return <li>{children}</li>
+type TaskListItemProps = {
+    task: Task;
+    onDelete: (id: number) => void;
+    children: React.ReactNode;
+};
+
+export default function TaskListItem({task, onDelete, children }: TaskListItemProps) {
+  // console.info("TaskListItem Rendered");
+
+  return (
+    <>
+     
+      <li>{children}
+      <button onClick={() => onDelete(task.id)}>Delete</button>
+      </li>
+    
+      
+      
+    </>
+  );
 }

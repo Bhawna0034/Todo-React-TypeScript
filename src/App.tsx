@@ -9,7 +9,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = (taskName: string) => {
-    console.info(taskName);
+    // console.info(taskName);
     setTasks([
       ...tasks,
       {
@@ -19,6 +19,11 @@ function App() {
       },
     ]);
   };
+  
+  const deleteTask = (taskId: number)=> {
+    // console.info("Delete Task: ", taskId);
+    setTasks(tasks.filter(task => task.id !== taskId));
+  }
 
   return (
     <div>
@@ -28,7 +33,7 @@ function App() {
       <TaskList>
         <TaskListHeader count={tasks.length} />
         {tasks.map((task) => (
-          <TaskListItem key={task.id}>{task.title}</TaskListItem>
+          <TaskListItem key={task.id} onDelete={deleteTask} task={task}>{task.title}</TaskListItem>
         ))}
       </TaskList>
     </div>

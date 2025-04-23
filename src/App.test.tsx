@@ -43,4 +43,30 @@ describe("App", () => {
         expect(screen.queryAllByRole('listitem')).toHaveLength(1);
     });
   });
+
+  test("should delete the task after clicking the delete button", async() => {
+    const user = userEvent.setup();
+    render(<App />);
+    
+    const input = screen.getByRole('textbox', {name: 'Add Task:'});
+    const addButton = screen.getByRole('button', {name: 'Add'});
+
+    await user.type(input, 'New Task');
+    await user.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("New Task")).toBeInTheDocument();
+    })
+    const deleteButton = screen.getByRole('button', {name: /Delete/i});
+
+    await user.click(deleteButton);
+    await waitFor(() => {
+      expect(screen.queryByText('New Task')).not.toBeInTheDocument();
+    })
+
+  });
+  
+  test.todo("should edit the task after clicking the edit button", () => {
+
+  })
 });
