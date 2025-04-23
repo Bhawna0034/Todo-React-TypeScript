@@ -3,10 +3,11 @@ import { Task } from "./types";
 type TaskListItemProps = {
     task: Task;
     onDelete: (id: number) => void;
+    onEdit: (task: Task) => void;
     children: React.ReactNode;
 };
 
-export default function TaskListItem({task, onDelete, children }: TaskListItemProps) {
+export default function TaskListItem({task, onDelete, onEdit, children }: TaskListItemProps) {
   // console.info("TaskListItem Rendered");
 
   return (
@@ -14,6 +15,8 @@ export default function TaskListItem({task, onDelete, children }: TaskListItemPr
      
       <li>{children}
       <button onClick={() => onDelete(task.id)}>Delete</button>
+      <button onClick={() => onEdit(task)}>Edit</button>
+    
       </li>
     
       
