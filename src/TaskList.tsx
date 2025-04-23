@@ -1,16 +1,26 @@
-import TaskListItem from "./TaskListItem";
-import { Task } from "./types";
+import { useEffect, useState } from "react";
 
 type TaskListProps = {
-  tasks: Task[];
+  header?: React.ReactNode;
 };
 
-export default function TaskList({ tasks }: TaskListProps) {
+
+export default function TaskList({header, children}: React.PropsWithChildren<TaskListProps>) {
+  // console.info('TaskList rendered');
+  const [secondsPassed, setSecondsPassed] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsPassed((secondsPassed) => secondsPassed + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  },[]);
   return (
-    <ul>
-      {tasks.map((task) => {
-        return <TaskListItem key={task.id} title={task.title} />
-      })}
-    </ul>
+    <>
+    {header}
+    <p>Seconds passed: {secondsPassed}</p>
+    <ul>{children}</ul>
+    </>
+    
   );
 }

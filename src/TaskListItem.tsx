@@ -1,7 +1,8 @@
-type TaskListItemProps = {
-    title: string;
-};
+// type TaskListItemProps = {
+//     title: string;
+// };
 
-export default function TaskListItem({title}: TaskListItemProps){
-    return <li>{title}</li>
+export default function TaskListItem({children}:React.PropsWithChildren){
+    // console.info("TaskListItem Rendered");
+    return <li>{children}</li>
 }
