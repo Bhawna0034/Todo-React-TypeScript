@@ -1,29 +1,18 @@
-import { useState } from "react";
+
 import { Task } from "./types";
 import AddTask from "./AddTask";
 import TaskList from "./TaskList";
 import TaskListItem from "./TaskListItem";
 import TaskListHeader from "./TaskListHeader";
+import useLocalStorage from "./components/useLocalStorage";
 
-const todoKey = "reactTodo";
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    try{
-      const storedTasks = localStorage.getItem(todoKey);
-    if(!storedTasks || storedTasks === undefined) return [];
-    return JSON.parse(storedTasks) as Task[];
-    }catch(error){
-      console.info("failed to get data from local storage: ", error);
-      return [];
-    }
+  const [tasks, setTasks] = useLocalStorage<Task[]>("reactTodo", []);
     
-  });
  
   // const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   console.log(tasks);
-
-  localStorage.setItem(todoKey, JSON.stringify(tasks));
 
   // Add a New Task
   const addTask = (taskName: string) => {
