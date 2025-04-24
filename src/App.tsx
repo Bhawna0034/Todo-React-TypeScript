@@ -5,9 +5,25 @@ import TaskList from "./TaskList";
 import TaskListItem from "./TaskListItem";
 import TaskListHeader from "./TaskListHeader";
 
+const todoKey = "reactTodo";
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    try{
+      const storedTasks = localStorage.getItem(todoKey);
+    if(!storedTasks || storedTasks === undefined) return [];
+    return JSON.parse(storedTasks) as Task[];
+    }catch(error){
+      console.info("failed to get data from local storage: ", error);
+      return [];
+    }
+    
+  });
+ 
+  // const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  console.log(tasks);
+
+  localStorage.setItem(todoKey, JSON.stringify(tasks));
 
   // Add a New Task
   const addTask = (taskName: string) => {
@@ -29,26 +45,30 @@ function App() {
   };
 
   // Edit a Task
-  const updateTask = (taskId: number, newTitle: string) => {
+  const updateTask = (newTask: Task) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === taskId ? { ...task, title: newTitle } : task
+        task.id === newTask.id ? { ...task, title: newTask.title } : task
       )
     );
-    setEditingTask(null);
   };
 
   return (
     <div>
       <h1>Tasks</h1>
-      <AddTask addTask={addTask} editingTask = {editingTask} updateTask={updateTask}/>
+      <AddTask
+        addTask={addTask}
+      />
 
       <TaskList>
         <TaskListHeader count={tasks.length} />
         {tasks.map((task) => (
-          <TaskListItem key={task.id} onDelete={deleteTask} onEdit={setEditingTask} task={task}>
-            {task.title}
-          </TaskListItem>
+          <TaskListItem
+            key={task.id}
+            onDelete={deleteTask}
+            onEdit={updateTask}
+            task={task}
+          />
         ))}
       </TaskList>
     </div>

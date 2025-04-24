@@ -54,14 +54,15 @@ describe("App", () => {
     await user.type(input, 'New Task');
     await user.click(addButton);
 
+    const newTask = screen.getAllByDisplayValue('New Task');
     await waitFor(() => {
-      expect(screen.getByText("New Task")).toBeInTheDocument();
+      expect(newTask[0]).toBeInTheDocument();
     })
-    const deleteButton = screen.getByRole('button', {name: /Delete/i});
+    const deleteButtons = screen.getAllByText('Delete');
 
-    await user.click(deleteButton);
+    await user.click(deleteButtons[0]);
     await waitFor(() => {
-      expect(screen.queryByText('New Task')).not.toBeInTheDocument();
+      expect(screen.queryByDisplayValue('New Task')).not.toBeInTheDocument();
     })
 
   });
@@ -76,25 +77,34 @@ describe("App", () => {
     await user.click(addButton);
 
     await waitFor(() => {
-      expect(screen.getByText('New Task')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('New Task')).toBeInTheDocument();
     });
 
     const editButton = screen.getByRole('button', {name: 'Edit'});
     await user.click(editButton);
 
-    const editInput = screen.getByRole('textbox', {name: 'Edit Task:'});
-    expect(editInput).toHaveValue('New Task');
+    const editInput = screen.getAllByRole('textbox');
+    expect(editInput[1]).toHaveValue('New Task');
 
-    await user.clear(editInput);
-    await user.type(editInput, 'Updated Task');
+    await user.clear(editInput[1]);
+    await user.type(editInput[1], 'Updated Task');
 
     const saveButton = screen.getByRole('button', {name: "Save"});
     await user.click(saveButton);
 
     await waitFor(() => {
-      expect(screen.queryByText('New Task')).not.toBeInTheDocument();
-      expect(screen.getByText('Updated Task')).toBeInTheDocument();
+      expect(screen.queryByDisplayValue('New Task')).not.toBeInTheDocument();
+      expect(screen.getByDisplayValue('Updated Task')).toBeInTheDocument();
     });
 
   });
+
+  test("running test case",() => {
+    // const user = userEvent.setup();
+    render(<App />)
+    const heading = screen.getByText('Tasks');
+    expect(heading).toBeInTheDocument();
+
+  });
+   
 });
