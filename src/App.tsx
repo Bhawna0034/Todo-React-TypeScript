@@ -4,7 +4,7 @@ import AddTask from "./AddTask";
 import TaskList from "./TaskList";
 import TaskListItem from "./TaskListItem";
 import TaskListHeader from "./TaskListHeader";
-import useLocalStorage from "./components/useLocalStorage";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
   const [tasks, setTasks] = useLocalStorage<Task[]>("reactTodo", []);
